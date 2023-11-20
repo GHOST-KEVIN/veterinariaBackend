@@ -1,4 +1,4 @@
-package veterinaria.modelo;
+package veterinaria.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;

@@ -5,10 +5,10 @@ import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import veterinaria.modelo.DetalleHistoriaClinica;
-import veterinaria.modelo.HistoriaClinica;
-import veterinaria.repositorio.DetalleHistoriaClinicaRepository;
-import veterinaria.repositorio.HistoriaClinicaRepository;
+import veterinaria.models.DetalleHistoriaClinica;
+import veterinaria.models.HistoriaClinica;
+import veterinaria.repositorys.DetalleHistoriaClinicaRepository;
+import veterinaria.repositorys.HistoriaClinicaRepository;
 import veterinaria.services.DetalleHistoriaClinicaService;
 
 @Service

@@ -1,4 +1,4 @@
-package veterinaria.controlador;
+package veterinaria.controllers;
 
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import veterinaria.modelo.Usuario;
+import veterinaria.models.Usuario;
 import veterinaria.services.UsuarioService;
 
 @RestController

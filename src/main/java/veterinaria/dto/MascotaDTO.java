@@ -1,8 +1,8 @@
 package veterinaria.dto;
 
 import lombok.Data;
-import veterinaria.modelo.HistoriaClinica;
-import veterinaria.modelo.Usuario;
+import veterinaria.models.HistoriaClinica;
+import veterinaria.models.Usuario;
 
 @Data
 public class MascotaDTO {
@@ -13,5 +13,4 @@ public class MascotaDTO {
     private String sexo;
     private Usuario usuario;
     private HistoriaClinica historiaClinica;
-    
 }

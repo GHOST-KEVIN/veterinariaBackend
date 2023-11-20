@@ -7,12 +7,12 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import veterinaria.dto.MascotaDTO;
-import veterinaria.modelo.HistoriaClinica;
-import veterinaria.modelo.Mascota;
-import veterinaria.modelo.Usuario;
-import veterinaria.repositorio.HistoriaClinicaRepository;
-import veterinaria.repositorio.MascotaRepository;
-import veterinaria.repositorio.UsuarioRepository;
+import veterinaria.models.HistoriaClinica;
+import veterinaria.models.Mascota;
+import veterinaria.models.Usuario;
+import veterinaria.repositorys.HistoriaClinicaRepository;
+import veterinaria.repositorys.MascotaRepository;
+import veterinaria.repositorys.UsuarioRepository;
 import veterinaria.services.MascotaService;
 
 @Service
@@ -28,20 +28,26 @@ public class MascotaServiceImpl implements MascotaService{
     private UsuarioRepository usuarioRepository;
     
     @Override
-    public List<Mascota> todasLasMascotas() {
+    public List<Mascota> obtener() {
         return mascotaRepository.findAll();
     }
 
     @Override
-    public Mascota mascotaById(Integer id) {
+    public Mascota obtenerPorId(Integer id) {
         Optional<Mascota> mascotaOptional = mascotaRepository.findById(id);
         
         if(!mascotaOptional.isPresent()) return null;
-        
-        MascotaDTO mascota = new MascotaDTO();
-        mascota.setId(mascotaOptional.get().getId());
-        
         return mascotaOptional.get();
+        
+//        MascotaDTO mascota = new MascotaDTO();
+//        mascota.setId(mascotaOptional.get().getId());
+//        mascota.setNombre(mascotaOptional.get().getNombre());
+//        mascota.setRaza(mascotaOptional.get().getRaza());
+//        mascota.setSexo(mascotaOptional.get().getSexo());
+        
+        
+        
+//        return mascota;
     }
 
     @Override

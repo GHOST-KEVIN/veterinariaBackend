@@ -1,0 +1,17 @@
+<!-- veterinaria/mapper/MascotaMapper.xml -->
+<mapper namespace="veterinaria.mappers.MascotaMapper">
+    <resultMap id="MascotaDTOMap" type="veterinaria.dto.MascotaDTO">
+         <!--Mapeo de propiedades--> 
+        <result property="id" column="id"/>
+        <result property="nombre" column="nombre"/>
+        <result property="raza" column="raza"/>
+        <result property="sexo" column="sexo"/>
+        <result property="usuario" column="usuario_id"/>
+         <!--Agrega más propiedades según sea necesario--> 
+    </resultMap>
+
+    <select id="mascotaToMascotaDTO" resultMap="MascotaDTOMap">
+         <!--Tu sentencia SQL aquí--> 
+        SELECT id, nombre, raza, sexo, usuario_id FROM mascota WHERE id = #{id}
+    </select>
+</mapper>

@@ -1,7 +1,7 @@
 package veterinaria.services;
 
 import java.util.Set;
-import veterinaria.modelo.Usuario;
+import veterinaria.models.Usuario;
 
 public interface UsuarioService {
     Set<Usuario> todosLosUsuarios();

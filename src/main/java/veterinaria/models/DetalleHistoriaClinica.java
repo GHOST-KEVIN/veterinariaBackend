@@ -1,4 +1,4 @@
-package veterinaria.modelo;
+package veterinaria.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

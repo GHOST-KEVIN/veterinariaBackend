@@ -1,13 +1,13 @@
 package veterinaria.services;
 
 import java.util.List;
-import java.util.Set;
-import veterinaria.modelo.Mascota;
+import veterinaria.dto.MascotaDTO;
+import veterinaria.models.Mascota;
 
 public interface MascotaService {
-    List<Mascota> todasLasMascotas();
+    List<Mascota> obtener();
     
-    Mascota mascotaById(Integer id);
+    Mascota obtenerPorId(Integer id);
     
     Mascota registrar(Mascota mascota);
     

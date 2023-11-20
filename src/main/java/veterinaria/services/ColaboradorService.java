@@ -1,7 +1,7 @@
 package veterinaria.services;
 
 import java.util.Set;
-import veterinaria.modelo.Colaborador;
+import veterinaria.models.Colaborador;
 
 public interface ColaboradorService {
     Set<Colaborador> obtener();

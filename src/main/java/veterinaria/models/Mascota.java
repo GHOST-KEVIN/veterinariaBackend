@@ -1,4 +1,4 @@
-package veterinaria.modelo;
+package veterinaria.models;
 
 // Indica que la clase es una entidad que se mapeará a una tabla en la base de datos.
 import com.fasterxml.jackson.annotation.JsonIgnore;

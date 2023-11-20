@@ -1,4 +1,4 @@
-package veterinaria.controlador;
+package veterinaria.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import veterinaria.modelo.HistoriaClinica;
-import veterinaria.modelo.Mascota;
+import veterinaria.models.HistoriaClinica;
+import veterinaria.models.Mascota;
 import veterinaria.services.HistoriaClinicaService;
 
 @RestController

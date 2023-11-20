@@ -5,8 +5,8 @@ import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import veterinaria.modelo.Usuario;
-import veterinaria.repositorio.UsuarioRepository;
+import veterinaria.models.Usuario;
+import veterinaria.repositorys.UsuarioRepository;
 import veterinaria.services.UsuarioService;
 
 @Service

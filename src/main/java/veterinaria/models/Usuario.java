@@ -1,36 +1,42 @@
-package veterinaria.modelo;
+package veterinaria.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
-@Table(name = "colaborador")
-public class Colaborador {
+@Table(name = "usuario")
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @Column(name = "nombres", length = 30, nullable = false)
+    @Column(name = "nombre", length = 25, nullable = false)
     private String nombre;
     
-    @Column(name = "apellidos", length = 30, nullable = false)
+    @Column(name = "apellido", length = 25, nullable = false)
     private String apellido;
-    
-    @Column(name = "cargo", length = 25, nullable = false)
-    private String cargo;
-    
-    @Column(name = "especialidad", length = 30, nullable = false)
-    private String especialidad;
     
     @Column(name = "tipo_documento", length = 2, nullable = false)
     private String tipoDocumento;
-    
+   
     @Column(name = "documento_identificacion", nullable = false)
     private int documentoIdentificacion;
+    
+    @Column(name = "sexo", length = 6, nullable = false)
+    private String sexo;
+    
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Mascota> mascotas = new LinkedHashSet<>();
 
     public int getId() {
         return id;
@@ -56,22 +62,6 @@ public class Colaborador {
         this.apellido = apellido;
     }
 
-    public String getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
-
-    public String getEspecialidad() {
-        return especialidad;
-    }
-
-    public void setEspecialidad(String especialidad) {
-        this.especialidad = especialidad;
-    }
-
     public String getTipoDocumento() {
         return tipoDocumento;
     }
@@ -86,5 +76,21 @@ public class Colaborador {
 
     public void setDocumentoIdentificacion(int documentoIdentificacion) {
         this.documentoIdentificacion = documentoIdentificacion;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public Set<Mascota> getMascotas() {
+        return mascotas;
+    }
+
+    public void setMascotas(Set<Mascota> mascotas) {
+        this.mascotas = mascotas;
     }
 }

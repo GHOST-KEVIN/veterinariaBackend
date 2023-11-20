@@ -6,9 +6,9 @@ import java.util.Set;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import veterinaria.modelo.HistoriaClinica;
-import veterinaria.modelo.Mascota;
-import veterinaria.repositorio.HistoriaClinicaRepository;
+import veterinaria.models.HistoriaClinica;
+import veterinaria.models.Mascota;
+import veterinaria.repositorys.HistoriaClinicaRepository;
 import veterinaria.services.HistoriaClinicaService;
 
 @Service

@@ -1,8 +1,8 @@
-package veterinaria.repositorio;
+package veterinaria.repositorys;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import veterinaria.modelo.Mascota;
+import veterinaria.models.Mascota;
 
 //@Repository
 public interface MascotaRepository extends JpaRepository<Mascota, Integer>{

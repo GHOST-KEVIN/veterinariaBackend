@@ -1,8 +1,8 @@
 package veterinaria.services;
 
 import java.util.Set;
-import veterinaria.modelo.HistoriaClinica;
-import veterinaria.modelo.Mascota;
+import veterinaria.models.HistoriaClinica;
+import veterinaria.models.Mascota;
 public interface HistoriaClinicaService {
     public Set<HistoriaClinica> todasLasHistoriasClinicas();
     

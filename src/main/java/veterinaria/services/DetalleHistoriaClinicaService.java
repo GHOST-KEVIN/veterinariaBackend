@@ -1,7 +1,7 @@
 package veterinaria.services;
 
 import java.util.Set;
-import veterinaria.modelo.DetalleHistoriaClinica;
+import veterinaria.models.DetalleHistoriaClinica;
 
 public interface DetalleHistoriaClinicaService {
     Set<DetalleHistoriaClinica> todosLosDetalles();
