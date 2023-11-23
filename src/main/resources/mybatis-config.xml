@@ -1,7 +1,0 @@
-
-<configuration>
-    <mappers>
-        <mapper resource="src/main/resources/mappers/MascotaMapper.xml"/>
-        <!-- Otros mappers si los tienes -->
-    </mappers>
-</configuration>
