@@ -11,24 +11,28 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import veterinaria.dto.DetalleHistoriaClinicaDTO;
 import veterinaria.models.DetalleHistoriaClinica;
 import veterinaria.services.DetalleHistoriaClinicaService;
 
 @RestController
 @RequestMapping("/api/detalle_historia_clinica")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class DetalleHistoriaClinicaController {
     @Autowired
     private DetalleHistoriaClinicaService detalleService;
     
     @GetMapping
     public ResponseEntity<?> listartodosLosDetalles(){
-        return ResponseEntity.ok(detalleService.todosLosDetalles());
+        return ResponseEntity.ok(detalleService.obtenerTodo());
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<DetalleHistoriaClinica> obtenerDetallePorId(@PathVariable Integer id){
-        return ResponseEntity.ok(detalleService.detalleById(id));
+    public ResponseEntity<DetalleHistoriaClinicaDTO> obtenerDetallePorId(@PathVariable Integer id){
+        
+        DetalleHistoriaClinicaDTO detalleDTO = detalleService.obtenerPorId(id);
+        return ResponseEntity.ok(detalleDTO);
+        
     }
     
     @PostMapping()
@@ -43,8 +47,10 @@ public class DetalleHistoriaClinicaController {
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarDetalles(@PathVariable Integer id){
-        detalleService.eliminar(id);
         
+        detalleService.eliminar(id);
         return ResponseEntity.noContent().build();
+        
     }
+    
 }

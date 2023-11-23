@@ -1,16 +1,13 @@
 package veterinaria.services.impl;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import veterinaria.dto.MascotaDTO;
-import veterinaria.models.HistoriaClinica;
+import veterinaria.mappers.MascotaMapper;
 import veterinaria.models.Mascota;
 import veterinaria.models.Usuario;
-import veterinaria.repositorys.HistoriaClinicaRepository;
 import veterinaria.repositorys.MascotaRepository;
 import veterinaria.repositorys.UsuarioRepository;
 import veterinaria.services.MascotaService;
@@ -22,56 +19,58 @@ public class MascotaServiceImpl implements MascotaService{
     private MascotaRepository mascotaRepository;
     
     @Autowired
-    private HistoriaClinicaRepository historiaClinicaRepository;
-    
-    @Autowired
     private UsuarioRepository usuarioRepository;
     
+    @Autowired
+    private MascotaMapper mascotaMapper;
+    
     @Override
-    public List<Mascota> obtener() {
-        return mascotaRepository.findAll();
+    public List<MascotaDTO> obtenerTodo() {
+        
+        List<MascotaDTO> mascotasDTO = mascotaMapper.listMascotaToListMascotaDTO(mascotaRepository.findAll());
+        
+        for(MascotaDTO mascotaDTO : mascotasDTO){
+            
+            Usuario usuario = usuarioRepository.findByUsuarioId(mascotaDTO.getUsuarioId());
+            mascotaDTO.setUsuario(usuario);
+            
+        }
+        
+        return mascotasDTO;
+        
     }
 
     @Override
-    public Mascota obtenerPorId(Integer id) {
-        Optional<Mascota> mascotaOptional = mascotaRepository.findById(id);
+    public MascotaDTO obtenerPorId(Integer id) {
+        Optional<Mascota> mascota = mascotaRepository.findById(id);
+        if(!mascota.isPresent()) return null;
         
-        if(!mascotaOptional.isPresent()) return null;
-        return mascotaOptional.get();
+        MascotaDTO getMascotaDTO = mascotaMapper.mascotaToMascotaDTO(mascota.get());
         
-//        MascotaDTO mascota = new MascotaDTO();
-//        mascota.setId(mascotaOptional.get().getId());
-//        mascota.setNombre(mascotaOptional.get().getNombre());
-//        mascota.setRaza(mascotaOptional.get().getRaza());
-//        mascota.setSexo(mascotaOptional.get().getSexo());
+        MascotaDTO mascotaDTO = new MascotaDTO();
+        mascotaDTO.setId(getMascotaDTO.getId());
+        mascotaDTO.setNombre(getMascotaDTO.getNombre());
+        mascotaDTO.setRaza(getMascotaDTO.getRaza());
+        mascotaDTO.setSexo(getMascotaDTO.getSexo());
+        mascotaDTO.setUsuarioId(getMascotaDTO.getUsuarioId());
+        Usuario usuario = usuarioRepository.findByUsuarioId(getMascotaDTO.getUsuarioId());
+        mascotaDTO.setUsuario(usuario);
         
-        
-        
-//        return mascota;
+        return mascotaDTO;
     }
 
     @Override
     public Mascota registrar(Mascota mascota) {
-//        Optional<Usuario> usuarioOptional = usuarioRepository.findById(mascota.getUsuario().getId());
-//        
-//        if(!usuarioOptional.isPresent()) return null;
-//        
-//        mascota.setUsuario(usuarioOptional.get());
         
         return mascotaRepository.save(mascota);
+        
     }
 
     @Override
     public Mascota actualizar(Integer id, Mascota mascota) {
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(mascota.getUsuario().getId());
-        if(!usuarioOptional.isPresent()) return null;
         
-        Optional<Mascota> mascotaOptional = mascotaRepository.findById(id);
-        if(!mascotaOptional.isPresent()) return null;
-        
-        mascota.setUsuario(usuarioOptional.get());
-        mascota.setId(mascotaOptional.get().getId());
         return mascotaRepository.save(mascota);
+        
     }
     
     @Override

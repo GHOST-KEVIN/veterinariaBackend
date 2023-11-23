@@ -1,16 +1,19 @@
 package veterinaria.models;
 
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor 
 @Entity
 @Table(name = "detalle_historia_clinica")
 public class DetalleHistoriaClinica {
@@ -31,7 +34,7 @@ public class DetalleHistoriaClinica {
     private double frecuenciaRespiratoria;
     
     @Column(name = "fecha_hora", nullable = false)
-    private String fechaHora;
+    private LocalDate fechaHora;
     
     @Column(name = "alimentacion", nullable = false, length = 255)
     private String alimentacion;
@@ -42,109 +45,10 @@ public class DetalleHistoriaClinica {
     @Column(name = "observacion", nullable = false, length = 255)
     private String observacion;
     
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    private HistoriaClinica historiaClinica;
+    @Column(name = "historia_clinica_id", nullable = false)
+    private Integer historiaClinicaId;
     
-    @OneToOne
-    @JoinColumn(name = "colaborador_id", referencedColumnName = "id", nullable = true)
-    private Colaborador colaborador;
-    
-    public DetalleHistoriaClinica(){
-//        super();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTemperatura() {
-        return temperatura;
-    }
-
-    public void setTemperatura(String temperatura) {
-        this.temperatura = temperatura;
-    }
-
-    public double getPeso() {
-        return peso;
-    }
-
-    public void setPeso(double peso) {
-        this.peso = peso;
-    }
-
-    public double getFrecuenciaCardiaca() {
-        return frecuenciaCardiaca;
-    }
-
-    public void setFrecuenciaCardiaca(double frecuenciaCardiaca) {
-        this.frecuenciaCardiaca = frecuenciaCardiaca;
-    }
-
-    public double getFrecuenciaRespiratoria() {
-        return frecuenciaRespiratoria;
-    }
-
-    public void setFrecuenciaRespiratoria(double frecuenciaRespiratoria) {
-        this.frecuenciaRespiratoria = frecuenciaRespiratoria;
-    }
-
-    public String getFechaHora() {
-        return fechaHora;
-    }
-
-    public void setFechaHora(String fechaHora) {
-        this.fechaHora = fechaHora;
-    }
-
-    public String getAlimentacion() {
-        return alimentacion;
-    }
-
-    public void setAlimentacion(String alimentacion) {
-        this.alimentacion = alimentacion;
-    }
-
-    public String getHabitad() {
-        return habitad;
-    }
-
-    public void setHabitad(String habitad) {
-        this.habitad = habitad;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-
-    public HistoriaClinica getHistoriaClinica() {
-        return historiaClinica;
-    }
-
-    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
-        this.historiaClinica = historiaClinica;
-        
-    }
-    
-    public Colaborador getColaborador(){
-        return colaborador;
-    }
-    
-    public void setColaborador(Colaborador colaborador){
-        this.colaborador = colaborador;
-    }
-
-    @Override
-    public String toString() {
-        return "DetalleHistoriaClinica{" + "id=" + id + ", temperatura=" + temperatura + ", peso=" + peso + ", frecuenciaCardiaca=" + frecuenciaCardiaca + ", frecuenciaRespiratoria=" + frecuenciaRespiratoria + ", fechaHora=" + fechaHora + ", alimentacion=" + alimentacion + ", habitad=" + habitad + ", observacion=" + observacion + ", historiaClinica=" + historiaClinica + '}';
-    }
+    @Column(name = "colaborador_id", nullable = false)
+    private Integer colaboradorId;
     
 }

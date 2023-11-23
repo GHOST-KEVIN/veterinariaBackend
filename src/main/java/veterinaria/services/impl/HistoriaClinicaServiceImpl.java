@@ -1,14 +1,16 @@
 package veterinaria.services.impl;
 
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import veterinaria.dto.HistoriaClinicaDTO;
+import veterinaria.mappers.HistoriaClinicaMapper;
 import veterinaria.models.HistoriaClinica;
 import veterinaria.models.Mascota;
 import veterinaria.repositorys.HistoriaClinicaRepository;
+import veterinaria.repositorys.MascotaRepository;
 import veterinaria.services.HistoriaClinicaService;
 
 @Service
@@ -16,18 +18,42 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService{
     @Autowired
     private HistoriaClinicaRepository historiaClinicaRepository;
     
+    @Autowired
+    private MascotaRepository mascotaRepository;
+    
+    @Autowired
+    private HistoriaClinicaMapper historiaMapper;
+    
     @Override
-    public Set<HistoriaClinica> todasLasHistoriasClinicas() {
-        return new LinkedHashSet<>(historiaClinicaRepository.findAll());
+    public List<HistoriaClinicaDTO> obtenerTodo() {
+        
+        List<HistoriaClinica> historias = historiaClinicaRepository.findAll();
+        List<HistoriaClinicaDTO> historiasDTO = historiaMapper.listHistoriaClinicaToListHistoriaClinicaDTO(historias);
+        
+        for(HistoriaClinicaDTO historiaDTO : historiasDTO){
+            Mascota mascota = mascotaRepository.findByMascotaId(historiaDTO.getMascotaId());
+            historiaDTO.setMascota(mascota);
+        }
+        
+        return historiasDTO;
     }
 
     @Override
-    public HistoriaClinica historiaClinicaById(Integer id) {
-        Optional<HistoriaClinica> historiaClinicaOptional = historiaClinicaRepository.findById(id);
+    public HistoriaClinicaDTO obtenerPorId(Integer id) {
         
-        if(!historiaClinicaOptional.isPresent()) return null;
+        Optional<HistoriaClinica> historiaClinica = historiaClinicaRepository.findById(id);
+        if(!historiaClinica.isPresent()) return null;
+        HistoriaClinicaDTO getHistoriaDTO = historiaMapper.historiaClinicaToHistoriaClinicaDTO(historiaClinica.get());
         
-        return historiaClinicaOptional.get();
+        HistoriaClinicaDTO historiaDTO = new HistoriaClinicaDTO();
+        historiaDTO.setId(getHistoriaDTO.getId());
+        historiaDTO.setFechaCreacion(getHistoriaDTO.getFechaCreacion());
+        historiaDTO.setMascotaId(getHistoriaDTO.getMascotaId());
+        Mascota mascota = mascotaRepository.findByMascotaId(getHistoriaDTO.getMascotaId());
+        historiaDTO.setMascota(mascota);
+        
+        return historiaDTO;
+        
     }
 
     @Override

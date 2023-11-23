@@ -1,12 +1,16 @@
 package veterinaria.services.impl;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import veterinaria.dto.DetalleHistoriaClinicaDTO;
+import veterinaria.mappers.DetalleHistoriaClinicaMapper;
+import veterinaria.models.Colaborador;
 import veterinaria.models.DetalleHistoriaClinica;
 import veterinaria.models.HistoriaClinica;
+import veterinaria.repositorys.ColaboradorRepository;
 import veterinaria.repositorys.DetalleHistoriaClinicaRepository;
 import veterinaria.repositorys.HistoriaClinicaRepository;
 import veterinaria.services.DetalleHistoriaClinicaService;
@@ -19,39 +23,71 @@ public class DetalleHistoriaClinicaServiceImpl implements DetalleHistoriaClinica
     @Autowired
     private HistoriaClinicaRepository historiaClinicaRepository;
     
+    @Autowired
+    private ColaboradorRepository colaboradorRepository;
+    
+    @Autowired
+    private DetalleHistoriaClinicaMapper detalleMapper;
+    
     @Override
-    public Set<DetalleHistoriaClinica> todosLosDetalles() {
-        return new LinkedHashSet<>(detalleHistoriaClinicaRepository.findAll());
+    public List<DetalleHistoriaClinicaDTO> obtenerTodo() {
+        
+        List<DetalleHistoriaClinica> detalles = detalleHistoriaClinicaRepository.findAll();
+        List<DetalleHistoriaClinicaDTO> detallesDTO = detalleMapper.listDetalleHistoriaClinicaToListDetalleHistoriaClinicaDTO(detalles);
+        
+        for(DetalleHistoriaClinicaDTO detalleDTO : detallesDTO){
+            
+            HistoriaClinica historiaClinica = historiaClinicaRepository.findByHistoriaClinicaId(detalleDTO.getHistoriaClinicaId());
+            detalleDTO.setHistoriaClinica(historiaClinica);
+            
+            Colaborador colaborador = colaboradorRepository.findByColaboradorId(detalleDTO.getColaboradorId());
+            detalleDTO.setColaborador(colaborador);
+        }
+        
+        return detallesDTO;
+        
     }
 
     @Override
-    public DetalleHistoriaClinica detalleById(Integer id) {
-       Optional<DetalleHistoriaClinica> detalleOptional = detalleHistoriaClinicaRepository.findById(id);
+    public DetalleHistoriaClinicaDTO obtenerPorId(Integer id) {
+        
+       Optional<DetalleHistoriaClinica> detalle = detalleHistoriaClinicaRepository.findById(id);
+       if(!detalle.isPresent()) return null;
+       DetalleHistoriaClinicaDTO getDetalleDTO = detalleMapper.detalleHistoriaClinicaToDetalleHistoriaClinicaDTO(detalle.get());
        
-       if(!detalleOptional.isPresent()) return null;
+       DetalleHistoriaClinicaDTO detalleDTO = new DetalleHistoriaClinicaDTO();
+       detalleDTO.setId(getDetalleDTO.getId());
+       detalleDTO.setTemperatura(getDetalleDTO.getTemperatura());
+       detalleDTO.setPeso(getDetalleDTO.getPeso());
+       detalleDTO.setFrecuenciaCardiaca(getDetalleDTO.getFrecuenciaCardiaca());
+       detalleDTO.setFrecuenciaRespiratoria(getDetalleDTO.getFrecuenciaRespiratoria());
+       detalleDTO.setFechaHora(getDetalleDTO.getFechaHora());
+       detalleDTO.setAlimentacion(getDetalleDTO.getAlimentacion());
+       detalleDTO.setHabitad(getDetalleDTO.getHabitad());
+       detalleDTO.setObservacion(getDetalleDTO.getObservacion());
+       detalleDTO.setHistoriaClinicaId(getDetalleDTO.getHistoriaClinicaId());
        
-       return detalleOptional.get();
+       HistoriaClinica historia = historiaClinicaRepository.findByHistoriaClinicaId(getDetalleDTO.getHistoriaClinicaId());
+       detalleDTO.setHistoriaClinica(historia);
+       
+       Colaborador colaborador = colaboradorRepository.findByColaboradorId(getDetalleDTO.getColaboradorId());
+       detalleDTO.setColaborador(colaborador);
+       
+       return detalleDTO;
     }
 
     @Override
     public DetalleHistoriaClinica registrar(DetalleHistoriaClinica detalleHistoriaClinica) {
-        System.out.println("detalleHistoriaClinica  " + detalleHistoriaClinica.toString());
         
         return detalleHistoriaClinicaRepository.save(detalleHistoriaClinica);
+        
     }
 
     @Override
     public DetalleHistoriaClinica actualizar(Integer id, DetalleHistoriaClinica detalleHistoriaClinica) {
-        Optional<HistoriaClinica> historiaClinicaOptional = historiaClinicaRepository.findById(detalleHistoriaClinica.getHistoriaClinica().getId());
-        if(!historiaClinicaOptional.isPresent()) return null;
-        
-        Optional<DetalleHistoriaClinica> detalleOptional = detalleHistoriaClinicaRepository.findById(id);
-        if(!detalleOptional.isPresent()) return null;
-        
-        detalleHistoriaClinica.setHistoriaClinica(historiaClinicaOptional.get());
-        detalleHistoriaClinica.setId(detalleOptional.get().getId());
         
         return detalleHistoriaClinicaRepository.save(detalleHistoriaClinica);
+        
     }
 
     @Override

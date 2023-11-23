@@ -5,9 +5,9 @@ import veterinaria.dto.MascotaDTO;
 import veterinaria.models.Mascota;
 
 public interface MascotaService {
-    List<Mascota> obtener();
+    List<MascotaDTO> obtenerTodo();
     
-    Mascota obtenerPorId(Integer id);
+    MascotaDTO obtenerPorId(Integer id);
     
     Mascota registrar(Mascota mascota);
     

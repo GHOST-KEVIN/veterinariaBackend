@@ -1,6 +1,5 @@
 package veterinaria.controllers;
 
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,12 +11,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import veterinaria.dto.UsuarioDTO;
 import veterinaria.models.Usuario;
 import veterinaria.services.UsuarioService;
 
 @RestController
 @RequestMapping("/api/usuario")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class UsuarioController {
     
     @Autowired
@@ -25,12 +25,13 @@ public class UsuarioController {
     
     @GetMapping
     public ResponseEntity<?> listarTodosLosUsuarios(){
-        return ResponseEntity.ok(usuarioService.todosLosUsuarios());
+        return ResponseEntity.ok(usuarioService.obtenerTodo());
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> obtenerUsuarioPorId(@PathVariable Integer id){
-        return ResponseEntity.ok(usuarioService.usuarioById(id));
+    public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@PathVariable Integer id){
+        UsuarioDTO usuarioDTO = usuarioService.obtenerPorId(id);
+        return ResponseEntity.ok(usuarioDTO);
     }
     
     @PostMapping

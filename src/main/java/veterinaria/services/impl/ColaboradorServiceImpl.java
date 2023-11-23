@@ -16,7 +16,7 @@ public class ColaboradorServiceImpl implements ColaboradorService{
             
     @Override
     public Set<Colaborador> obtener() {
-        return new LinkedHashSet<>(colaboradorRepository.findAll());
+      return new LinkedHashSet<>(colaboradorRepository.findAll());
     }
 
     @Override

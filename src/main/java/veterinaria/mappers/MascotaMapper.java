@@ -1,13 +1,14 @@
 package veterinaria.mappers;
 
+import java.util.List;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 import veterinaria.dto.MascotaDTO;
 import veterinaria.models.Mascota;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface MascotaMapper {
-//    MascotaMapper INSTANCIA= Mappers.getMapper(MascotaMapper.class);
+    
+    List<MascotaDTO> listMascotaToListMascotaDTO(List<Mascota> mascota);
+    
     MascotaDTO mascotaToMascotaDTO(Mascota mascota);
-    Mascota mascotaDTOTomascota(MascotaDTO mascotaDTO);
 }

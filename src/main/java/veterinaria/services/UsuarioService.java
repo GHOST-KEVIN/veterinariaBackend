@@ -1,12 +1,13 @@
 package veterinaria.services;
 
-import java.util.Set;
+import java.util.List;
+import veterinaria.dto.UsuarioDTO;
 import veterinaria.models.Usuario;
 
 public interface UsuarioService {
-    Set<Usuario> todosLosUsuarios();
+    List<UsuarioDTO> obtenerTodo();
     
-    Usuario usuarioById(Integer id);
+    UsuarioDTO obtenerPorId(Integer id);
     
     Usuario registrar(Usuario usuario);
     

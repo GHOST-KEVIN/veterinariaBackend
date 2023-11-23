@@ -1,6 +1,5 @@
 package veterinaria.controllers;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,30 +18,24 @@ import veterinaria.services.MascotaService;
 
 @RestController
 @RequestMapping("/api/mascota")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class MascotaController {
     
     @Autowired
     private MascotaService mascotaService;
     
-    @Autowired
-    private MascotaMapper mascotaMapper;
-    
     @GetMapping
     public ResponseEntity<?> obtenerMascotas(){
-        return ResponseEntity.ok(mascotaService.obtener());
+        return ResponseEntity.ok(mascotaService.obtenerTodo());
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<MascotaDTO> obtenerMascotaPorId(@PathVariable Integer id){
-//        return ResponseEntity.ok(mascotaService.obtenerPorId(id));
-//        return ResponseEntity.ok(mascotaMapper.mascotaToMascotaDTO(mascotaService.obtenerPorId(id)));
 
-        MascotaDTO mascotaDTO = mascotaMapper.mascotaToMascotaDTO(mascotaService.obtenerPorId(id));
+        MascotaDTO mascotaDTO = mascotaService.obtenerPorId(id);
         return ResponseEntity.ok(mascotaDTO);
     
-       
-    }
+     }
     
     @PostMapping()
     public ResponseEntity<Mascota> guardarMascota(@RequestBody Mascota mascota){

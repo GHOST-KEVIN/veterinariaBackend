@@ -1,11 +1,21 @@
 package veterinaria.repositorys;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import veterinaria.models.Mascota;
 
-//@Repository
+@Transactional
+@Repository
 public interface MascotaRepository extends JpaRepository<Mascota, Integer>{
-//    @Query("DELETE FROM mascota AND historia_clinica where id=1?")
-//    public void eliminarMascota();
+    
+    @Query(nativeQuery = true, value = "SELECT * FROM mascota WHERE id = ?1")
+    public Mascota findByMascotaId(Integer id);
+    
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM mascota WHERE usuario_id = ?1")
+    public void deleteByMascotaId(Integer id);
+     
 }
