@@ -2,13 +2,13 @@ package veterinaria.services.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import veterinaria.dto.HistoriaClinicaDTO;
 import veterinaria.mappers.HistoriaClinicaMapper;
 import veterinaria.models.HistoriaClinica;
 import veterinaria.models.Mascota;
+import veterinaria.repositorys.DetalleHistoriaClinicaRepository;
 import veterinaria.repositorys.HistoriaClinicaRepository;
 import veterinaria.repositorys.MascotaRepository;
 import veterinaria.services.HistoriaClinicaService;
@@ -20,6 +20,9 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService{
     
     @Autowired
     private MascotaRepository mascotaRepository;
+    
+    @Autowired
+    private DetalleHistoriaClinicaRepository detalleRepository;
     
     @Autowired
     private HistoriaClinicaMapper historiaMapper;
@@ -71,7 +74,13 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService{
 
     @Override
     public void eliminar(Integer id) {
-//        Optional<HistoriaClinica> historiaClinicaOptional = historiaClinicaRepository.findById(id);
-        historiaClinicaRepository.deleteById(id);
+        
+        Optional<HistoriaClinica> historiaClinicaOptional = historiaClinicaRepository.findById(id);
+        if(!historiaClinicaOptional.isPresent()) return;
+        
+        historiaClinicaRepository.delete(historiaClinicaOptional.get());
+        detalleRepository.deleteByHistoriaClinicaId(id);
+        
     }
+    
 }

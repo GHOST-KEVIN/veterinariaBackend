@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import veterinaria.dto.MascotaDTO;
 import veterinaria.mappers.MascotaMapper;
+import veterinaria.models.HistoriaClinica;
 import veterinaria.models.Mascota;
 import veterinaria.models.Usuario;
+import veterinaria.repositorys.HistoriaClinicaRepository;
 import veterinaria.repositorys.MascotaRepository;
 import veterinaria.repositorys.UsuarioRepository;
+import veterinaria.services.HistoriaClinicaService;
 import veterinaria.services.MascotaService;
 
 @Service
@@ -20,6 +23,12 @@ public class MascotaServiceImpl implements MascotaService{
     
     @Autowired
     private UsuarioRepository usuarioRepository;
+    
+    @Autowired
+    private HistoriaClinicaRepository historiaRepository;
+    
+    @Autowired
+    private HistoriaClinicaService historiaService;
     
     @Autowired
     private MascotaMapper mascotaMapper;
@@ -76,14 +85,18 @@ public class MascotaServiceImpl implements MascotaService{
     @Override
     public void eliminar(Integer id) {
         Optional<Mascota> mascotaOptional = mascotaRepository.findById(id);
+        if(!mascotaOptional.isPresent()) return;
+        
+        List<HistoriaClinica> historiasClinicas = historiaRepository.findAll();
+           
+           for(HistoriaClinica historia : historiasClinicas){
+               
+               historiaService.eliminar(historia.getId());
+               
+           }
+           
         mascotaRepository.delete(mascotaOptional.get());
         
-//        Optional<HistoriaClinica> findById = historiaClinicaRepository.findById(mascotaOptional.get().getHistoriaClinica().getId());
-//        historiaClinicaRepository.deleteById(mascotaOptional.get().getHistoriaClinica().getId());
-//        findById
-        
-//        Mascota mascota = new Mascota();
-//        mascota.setId(id);
-//        mascotaRepository.delete(mascota);
     }
+    
 }
