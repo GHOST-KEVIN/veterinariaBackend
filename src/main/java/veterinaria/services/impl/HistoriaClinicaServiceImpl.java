@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import veterinaria.dto.HistoriaClinicaDTO;
+import veterinaria.exepciones.ResourceNotFoundException;
 import veterinaria.mappers.HistoriaClinicaMapper;
 import veterinaria.models.HistoriaClinica;
 import veterinaria.models.Mascota;
@@ -60,16 +61,42 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService{
     }
 
     @Override
-    public HistoriaClinica registrar(HistoriaClinica historiaClinica) {
+    public HistoriaClinica registrar(HistoriaClinica historiaClinica){
+        
+        Optional<HistoriaClinica> historiaClinicaOptional = historiaClinicaRepository.findByMascotaId(historiaClinica.getMascotaId());
+        Integer mascotaId = historiaClinica.getMascotaId();
+        Mascota mascota = mascotaRepository.findByMascotaId(mascotaId);
+        
+        if (historiaClinicaOptional.isPresent()) {
+            throw new ResourceNotFoundException("La mascota " + mascota.getNombre() + " ya tiene una historia clínica asociada.");
+        }
+        
         return historiaClinicaRepository.save(historiaClinica);
+        
     }
         
     @Override
     public HistoriaClinica actualizar(Integer id, HistoriaClinica historiaClinica) {
+
         Optional<HistoriaClinica> historiaClinicaOptional = historiaClinicaRepository.findById(id);
+        if (!historiaClinicaOptional.isPresent()) {
+            throw new ResourceNotFoundException("No se encontró la historia clínica con el id " + id);
+        }
+
+        Integer mascotaId = historiaClinica.getMascotaId();
+        Mascota mascota = mascotaRepository.findByMascotaId(mascotaId);
+        Optional<HistoriaClinica> historiaClinicaPorMascota = historiaClinicaRepository.findByMascotaId(mascotaId);
+        if (historiaClinicaPorMascota.isPresent() && historiaClinicaPorMascota.get().getId() != id) {
+            if(!mascota.getNombre().isEmpty()){
+            throw new ResourceNotFoundException("Ya existe una historia clínica para la mascota con el nombre " + mascota.getNombre());
+                
+            }
+        }
+
+        historiaClinica.setId(id);
         
-        historiaClinica.setId(historiaClinicaOptional.get().getId());
         return historiaClinicaRepository.save(historiaClinica);
+        
     }
 
     @Override

@@ -1,5 +1,7 @@
 package veterinaria.repositorys;
 
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,11 +16,14 @@ public interface HistoriaClinicaRepository extends JpaRepository<HistoriaClinica
     @Query(nativeQuery = true, value = "SELECT * FROM historia_clinica WHERE id = ?1")
     public HistoriaClinica findByHistoriaClinicaId(Integer id);
     
+    @Query(nativeQuery = true, value = "SELECT * FROM historia_clinica WHERE mascota_id = ?1")
+    public Optional<HistoriaClinica> findByMascotaId(Integer id);
+    
+//    @Query(nativeQuery = true, value = "SELECT * FROM historia_clinica WHERE mascota_id = ?1")
+//    public List<HistoriaClinica> findByMascotaId(Integer id);
+    
     @Modifying
     @Query(nativeQuery = true, value = "DELETE FROM historia_clinica WHERE mascota_id = ?1")
     public void deleteByHistoriaClinicaId(Integer id);
-    
-//    @Query("DELETE FROM historia_clinica WHERE mascota_id = ?1")
-//    public void deleteByMascotaId(Integer id);
     
 }

@@ -1,6 +1,9 @@
 package veterinaria.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import veterinaria.dto.HistoriaClinicaDTO;
+import veterinaria.exepciones.ResourceNotFoundException;
 import veterinaria.models.HistoriaClinica;
 import veterinaria.services.HistoriaClinicaService;
 
@@ -38,16 +42,37 @@ public class HistoriaClinicaController {
     }
     
     @PostMapping
-    public ResponseEntity<HistoriaClinica> guardarHistoriaClinica(@RequestBody HistoriaClinica historiaClinica){
+    public ResponseEntity<?> guardarHistoriaClinica(@RequestBody HistoriaClinica historiaClinica){
         
-        return ResponseEntity.ok(historiaClinicaService.registrar(historiaClinica));
-        
+        try {
+            
+            HistoriaClinica nuevaHistoriaClinica = historiaClinicaService.registrar(historiaClinica);
+            return ResponseEntity.ok(nuevaHistoriaClinica);
+            
+        } catch (ResourceNotFoundException e) {
+            
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            
+        }
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<HistoriaClinica> actualizarHistoriaClinica(@PathVariable Integer id, @RequestBody HistoriaClinica historiaClinica){
+    public ResponseEntity<?> actualizarHistoriaClinica(@PathVariable Integer id, @RequestBody HistoriaClinica historiaClinica){
         
-        return ResponseEntity.ok(historiaClinicaService.actualizar(id, historiaClinica));
+        try {
+            
+            HistoriaClinica editarHistoriaClinica = historiaClinicaService.actualizar(id, historiaClinica);
+            return ResponseEntity.ok(editarHistoriaClinica);
+            
+        } catch (ResourceNotFoundException e) {
+            
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            
+        }
         
     }
     

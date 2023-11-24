@@ -48,17 +48,7 @@ public class UsuarioServiceImpl implements UsuarioService{
         
         Optional<Usuario> usuario = usuarioRepository.findById(id);
         if(!usuario.isPresent()) return null;
-        UsuarioDTO getUsuarioDTO = usuarioMapper.usuarioToUsuarioDTO(usuario.get());
-        
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setId(getUsuarioDTO.getId());
-        usuarioDTO.setNombre(getUsuarioDTO.getNombre());
-        usuarioDTO.setApellido(getUsuarioDTO.getApellido());
-        usuarioDTO.setTipoDocumento(getUsuarioDTO.getTipoDocumento());
-        usuarioDTO.setDocumentoIdentificacion(getUsuarioDTO.getDocumentoIdentificacion());
-        usuarioDTO.setSexo(getUsuarioDTO.getSexo());
-        
-        return usuarioDTO;
+        return usuarioMapper.usuarioToUsuarioDTO(usuario.get());
         
     }
     
@@ -83,28 +73,73 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     @Override
     public void eliminar(Integer id) {
-        
+        long tiempoInicio = System.nanoTime();
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
         if(!usuarioOptional.isPresent()) return;
         
         List<Mascota> mascotas = mascotaRepository.findAll();
-        
         for(Mascota mascota : mascotas){
             
-           mascotaService.eliminar(mascota.getId());
-           
            List<HistoriaClinica> historiasClinicas = historiaRepository.findAll();
-           
            for(HistoriaClinica historia : historiasClinicas){
                
                historiaService.eliminar(historia.getId());
-               
-           }
+            }
+           
+           mascotaService.eliminar(mascota.getId());
         }
         
         usuarioRepository.delete(usuarioOptional.get());
-        mascotaRepository.deleteByMascotaId(id);
         
+        long tiempoFinal = System.nanoTime();
+        long duracion = tiempoFinal - tiempoInicio; // Esto te dará el tiempo en nanosegundos
+        System.out.println("Tiempo de ejecución: " + duracion + " en nanoSegundos");
+    
     }
+    
+//    @Override
+//    public void eliminar(Integer id) {
+//        long tiempoInicio = System.nanoTime();
+//        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+//        if (!usuarioOptional.isPresent()) {
+//            return;
+//        }
+//
+//        Usuario usuario = usuarioOptional.get();
+//        List<Mascota> mascotas = mascotaRepository.findByUsuarioId(usuario.getId());
+//        for (Mascota mascota : mascotas) {
+//
+//            List<HistoriaClinica> historiasClinicas = historiaRepository.findByMascotaId(mascota.getId());
+//            for (HistoriaClinica historia : historiasClinicas) {
+//                historiaService.eliminar(historia.getId());
+//            }
+//
+//            mascotaService.eliminar(mascota.getId());
+//        }
+//
+//        usuarioRepository.delete(usuario);
+//
+//        long tiempoFinal = System.nanoTime();
+//        long duracion = tiempoFinal - tiempoInicio; // Esto te dará el tiempo en nanosegundos
+//        System.out.println("Tiempo de ejecución: " + duracion + " nanoSegundos ");
+//    }
+    
+//    @Override
+//    public void eliminar(Integer id) {
+//        long tiempoInicio = System.nanoTime();
+//        usuarioRepository.findById(id).ifPresent(usuario -> {
+//            mascotaRepository.findByUsuarioId(usuario.getId()).stream().forEach(mascota -> {
+//                historiaRepository.findByMascotaId(mascota.getId()).stream().forEach(historia -> {
+//                    historiaService.eliminar(historia.getId());
+//                });
+//                mascotaService.eliminar(mascota.getId());
+//            });
+//            usuarioRepository.delete(usuario);
+//        });
+//
+//        long tiempoFinal = System.nanoTime();
+//        long duracion = tiempoFinal - tiempoInicio; // Esto te dará el tiempo en nanosegundos
+//        System.out.println("Tiempo de ejecución: " + duracion + " nanoSegundos ");
+//    }
 
 }

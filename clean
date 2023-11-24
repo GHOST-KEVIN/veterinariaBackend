@@ -1,0 +1,29 @@
+[33mcommit c246f21626b6cedeee4f2310c66bc084177ce4e9[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: GHOST-KEVIN <user.email>
+Date:   Thu Nov 23 12:06:52 2023 -0500
+
+    backend v2 metodos eliminar terminado
+
+[33mcommit f3a7088c075c562d3a1bca9018719d57910539c1[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: GHOST-KEVIN <user.email>
+Date:   Thu Nov 23 10:26:52 2023 -0500
+
+    backend v2 DTO y mapper agregados
+
+[33mcommit e0f8a7e2d8026940158f2321d1698eba0395a2d0[m
+Author: GHOST-KEVIN <user.email>
+Date:   Thu Nov 23 10:22:48 2023 -0500
+
+    backend v2 DTO y mapper agregados
+
+[33mcommit 6e43902e2a43a45a729ab18bfa1ab37a263a6bb6[m
+Author: GHOST-KEVIN <kevingrueso75@gmail.com>
+Date:   Sun Nov 19 19:28:52 2023 -0500
+
+    probando la version mejorada del backend de la veterinaria
+
+[33mcommit 781d51938eec07434d62ff148eecd9c2a8e94a5b[m
+Author: Cesar Acosta <user.email>
+Date:   Fri Nov 17 16:32:14 2023 -0500
+
+    veterinariaBackend

@@ -29,7 +29,7 @@ public class Usuario {
     @Column(name = "apellido", length = 25, nullable = false)
     private String apellido;
     
-    @Column(name = "tipo_documento", length = 2, nullable = false)
+    @Column(name = "tipo_documento", length = 255, nullable = false)
     private String tipoDocumento;
    
     @Column(name = "documento_identificacion", nullable = false)

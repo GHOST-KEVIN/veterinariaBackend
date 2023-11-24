@@ -2,6 +2,7 @@ package veterinaria.services.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import veterinaria.dto.MascotaDTO;
@@ -33,36 +34,42 @@ public class MascotaServiceImpl implements MascotaService{
     @Autowired
     private MascotaMapper mascotaMapper;
     
+//    @Override
+//    public List<MascotaDTO> obtenerTodo() {
+//        long startTime = System.nanoTime();
+//        List<MascotaDTO> mascotasDTO = mascotaMapper.listMascotaToListMascotaDTO(mascotaRepository.findAll());
+//        for(MascotaDTO mascotaDTO : mascotasDTO){
+//            Usuario usuario = usuarioRepository.findByUsuarioId(mascotaDTO.getUsuarioId());
+//            mascotaDTO.setUsuario(usuario);
+//        }
+//        long endTime = System.nanoTime();
+//        long duration = (endTime - startTime);
+//        System.out.println("Tiempo de ejecución del método For: " + duration + " nanosegundos");
+//        return mascotasDTO;
+//     }
+    
     @Override
     public List<MascotaDTO> obtenerTodo() {
-        
-        List<MascotaDTO> mascotasDTO = mascotaMapper.listMascotaToListMascotaDTO(mascotaRepository.findAll());
-        
-        for(MascotaDTO mascotaDTO : mascotasDTO){
-            
+        List<Mascota> mascotas = mascotaRepository.findAll();
+
+        return mascotas.stream().map(mascota -> {
+
+            MascotaDTO mascotaDTO = mascotaMapper.mascotaToMascotaDTO(mascota);
             Usuario usuario = usuarioRepository.findByUsuarioId(mascotaDTO.getUsuarioId());
             mascotaDTO.setUsuario(usuario);
-            
-        }
-        
-        return mascotasDTO;
-        
+            return mascotaDTO;
+
+        }).collect(Collectors.toList());
     }
 
     @Override
     public MascotaDTO obtenerPorId(Integer id) {
+        
         Optional<Mascota> mascota = mascotaRepository.findById(id);
         if(!mascota.isPresent()) return null;
         
-        MascotaDTO getMascotaDTO = mascotaMapper.mascotaToMascotaDTO(mascota.get());
-        
-        MascotaDTO mascotaDTO = new MascotaDTO();
-        mascotaDTO.setId(getMascotaDTO.getId());
-        mascotaDTO.setNombre(getMascotaDTO.getNombre());
-        mascotaDTO.setRaza(getMascotaDTO.getRaza());
-        mascotaDTO.setSexo(getMascotaDTO.getSexo());
-        mascotaDTO.setUsuarioId(getMascotaDTO.getUsuarioId());
-        Usuario usuario = usuarioRepository.findByUsuarioId(getMascotaDTO.getUsuarioId());
+        MascotaDTO mascotaDTO = mascotaMapper.mascotaToMascotaDTO(mascota.get());
+        Usuario usuario = usuarioRepository.findByUsuarioId(mascotaDTO.getUsuarioId());
         mascotaDTO.setUsuario(usuario);
         
         return mascotaDTO;
@@ -72,14 +79,12 @@ public class MascotaServiceImpl implements MascotaService{
     public Mascota registrar(Mascota mascota) {
         
         return mascotaRepository.save(mascota);
-        
-    }
+     }
 
     @Override
     public Mascota actualizar(Integer id, Mascota mascota) {
         
         return mascotaRepository.save(mascota);
-        
     }
     
     @Override
@@ -92,11 +97,8 @@ public class MascotaServiceImpl implements MascotaService{
            for(HistoriaClinica historia : historiasClinicas){
                
                historiaService.eliminar(historia.getId());
-               
-           }
+            }
            
         mascotaRepository.delete(mascotaOptional.get());
-        
     }
-    
 }
