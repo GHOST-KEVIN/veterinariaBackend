@@ -11,6 +11,7 @@ import veterinaria.models.HistoriaClinica;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DetalleHistoriaClinicaDTO {
+    
     private int id;
     private String temperatura;
     private double peso;

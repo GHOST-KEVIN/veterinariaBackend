@@ -19,11 +19,13 @@ import veterinaria.services.DetalleHistoriaClinicaService;
 @RequestMapping("/api/detalle_historia_clinica")
 @CrossOrigin(origins = "*")
 public class DetalleHistoriaClinicaController {
+    
     @Autowired
     private DetalleHistoriaClinicaService detalleService;
     
     @GetMapping
     public ResponseEntity<?> listartodosLosDetalles(){
+        
         return ResponseEntity.ok(detalleService.obtenerTodo());
     }
     
@@ -32,16 +34,17 @@ public class DetalleHistoriaClinicaController {
         
         DetalleHistoriaClinicaDTO detalleDTO = detalleService.obtenerPorId(id);
         return ResponseEntity.ok(detalleDTO);
-        
     }
     
     @PostMapping()
     public ResponseEntity<DetalleHistoriaClinica> guardarDetalle(@RequestBody DetalleHistoriaClinica detalle){
+        
         return ResponseEntity.ok(detalleService.registrar(detalle));
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<DetalleHistoriaClinica> actualizar(@PathVariable Integer id, @RequestBody DetalleHistoriaClinica detalle){
+        
         return ResponseEntity.ok(detalleService.actualizar(id, detalle));
     }
     
@@ -50,7 +53,5 @@ public class DetalleHistoriaClinicaController {
         
         detalleService.eliminar(id);
         return ResponseEntity.noContent().build();
-        
     }
-    
 }

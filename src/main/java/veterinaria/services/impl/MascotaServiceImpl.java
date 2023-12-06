@@ -34,22 +34,9 @@ public class MascotaServiceImpl implements MascotaService{
     @Autowired
     private MascotaMapper mascotaMapper;
     
-//    @Override
-//    public List<MascotaDTO> obtenerTodo() {
-//        long startTime = System.nanoTime();
-//        List<MascotaDTO> mascotasDTO = mascotaMapper.listMascotaToListMascotaDTO(mascotaRepository.findAll());
-//        for(MascotaDTO mascotaDTO : mascotasDTO){
-//            Usuario usuario = usuarioRepository.findByUsuarioId(mascotaDTO.getUsuarioId());
-//            mascotaDTO.setUsuario(usuario);
-//        }
-//        long endTime = System.nanoTime();
-//        long duration = (endTime - startTime);
-//        System.out.println("Tiempo de ejecución del método For: " + duration + " nanosegundos");
-//        return mascotasDTO;
-//     }
-    
     @Override
     public List<MascotaDTO> obtenerTodo() {
+        
         List<Mascota> mascotas = mascotaRepository.findAll();
 
         return mascotas.stream().map(mascota -> {
@@ -84,6 +71,9 @@ public class MascotaServiceImpl implements MascotaService{
     @Override
     public Mascota actualizar(Integer id, Mascota mascota) {
         
+        Optional<Mascota> mascotaOptional = mascotaRepository.findById(id);
+        mascotaOptional.get().getId();
+        mascota.setId(mascotaOptional.get().getId());
         return mascotaRepository.save(mascota);
     }
     

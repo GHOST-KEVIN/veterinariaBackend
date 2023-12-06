@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import veterinaria.dto.MascotaDTO;
-import veterinaria.mappers.MascotaMapper;
 import veterinaria.models.Mascota;
 import veterinaria.services.MascotaService;
 
@@ -26,6 +25,7 @@ public class MascotaController {
     
     @GetMapping
     public ResponseEntity<?> obtenerMascotas(){
+        
         return ResponseEntity.ok(mascotaService.obtenerTodo());
     }
     
@@ -34,16 +34,17 @@ public class MascotaController {
 
         MascotaDTO mascotaDTO = mascotaService.obtenerPorId(id);
         return ResponseEntity.ok(mascotaDTO);
-    
-     }
+    }
     
     @PostMapping()
     public ResponseEntity<Mascota> guardarMascota(@RequestBody Mascota mascota){
+        
         return ResponseEntity.ok(mascotaService.registrar(mascota));
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Mascota> actualizarMascota(@PathVariable Integer id, @RequestBody Mascota mascota){
+    public ResponseEntity<Mascota> actualizarMascota(@PathVariable("id") Integer id, @RequestBody Mascota mascota){
+        
         Mascota mascotaActualizado = mascotaService.actualizar(id, mascota);
         return ResponseEntity.ok(mascotaActualizado);
     }
@@ -52,7 +53,6 @@ public class MascotaController {
     public ResponseEntity<?> eliminarMascota(@PathVariable Integer id){
         
         mascotaService.eliminar(id);
-        
         return ResponseEntity.noContent().build();
     }
 }

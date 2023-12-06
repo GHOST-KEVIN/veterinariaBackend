@@ -38,7 +38,6 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService{
             Mascota mascota = mascotaRepository.findByMascotaId(historiaDTO.getMascotaId());
             historiaDTO.setMascota(mascota);
         }
-        
         return historiasDTO;
     }
 
@@ -47,17 +46,12 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService{
         
         Optional<HistoriaClinica> historiaClinica = historiaClinicaRepository.findById(id);
         if(!historiaClinica.isPresent()) return null;
-        HistoriaClinicaDTO getHistoriaDTO = historiaMapper.historiaClinicaToHistoriaClinicaDTO(historiaClinica.get());
         
-        HistoriaClinicaDTO historiaDTO = new HistoriaClinicaDTO();
-        historiaDTO.setId(getHistoriaDTO.getId());
-        historiaDTO.setFechaCreacion(getHistoriaDTO.getFechaCreacion());
-        historiaDTO.setMascotaId(getHistoriaDTO.getMascotaId());
-        Mascota mascota = mascotaRepository.findByMascotaId(getHistoriaDTO.getMascotaId());
+        HistoriaClinicaDTO historiaDTO = historiaMapper.historiaClinicaToHistoriaClinicaDTO(historiaClinica.get());
+        Mascota mascota = mascotaRepository.findByMascotaId(historiaDTO.getMascotaId());
         historiaDTO.setMascota(mascota);
         
         return historiaDTO;
-        
     }
 
     @Override
@@ -72,7 +66,6 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService{
         }
         
         return historiaClinicaRepository.save(historiaClinica);
-        
     }
         
     @Override
@@ -86,17 +79,14 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService{
         Integer mascotaId = historiaClinica.getMascotaId();
         Mascota mascota = mascotaRepository.findByMascotaId(mascotaId);
         Optional<HistoriaClinica> historiaClinicaPorMascota = historiaClinicaRepository.findByMascotaId(mascotaId);
-        if (historiaClinicaPorMascota.isPresent() && historiaClinicaPorMascota.get().getId() != id) {
-            if(!mascota.getNombre().isEmpty()){
+        if (historiaClinicaPorMascota.isPresent() && historiaClinicaPorMascota.get().getId() != id && !mascota.getNombre().isEmpty()) {
+            
             throw new ResourceNotFoundException("Ya existe una historia clínica para la mascota con el nombre " + mascota.getNombre());
-                
-            }
         }
 
         historiaClinica.setId(id);
         
         return historiaClinicaRepository.save(historiaClinica);
-        
     }
 
     @Override
@@ -107,7 +97,5 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService{
         
         historiaClinicaRepository.delete(historiaClinicaOptional.get());
         detalleRepository.deleteByHistoriaClinicaId(id);
-        
     }
-    
 }

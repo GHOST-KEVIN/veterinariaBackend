@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "detalle_historia_clinica")
 public class DetalleHistoriaClinica {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

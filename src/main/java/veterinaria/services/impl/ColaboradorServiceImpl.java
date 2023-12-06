@@ -11,6 +11,7 @@ import veterinaria.services.ColaboradorService;
 
 @Service
 public class ColaboradorServiceImpl implements ColaboradorService{
+    
     @Autowired
     private ColaboradorRepository colaboradorRepository;
             
@@ -18,7 +19,6 @@ public class ColaboradorServiceImpl implements ColaboradorService{
     public Set<Colaborador> obtener() {
         
       return new LinkedHashSet<>(colaboradorRepository.findAll());
-      
     }
 
     @Override
@@ -27,14 +27,12 @@ public class ColaboradorServiceImpl implements ColaboradorService{
         Optional<Colaborador> colaboradorOptional = colaboradorRepository.findById(id);
         if(!colaboradorOptional.isPresent()) return null;
         return colaboradorOptional.get();
-        
     }
 
     @Override
     public Colaborador guardar(Colaborador colaborador) {
         
         return colaboradorRepository.save(colaborador);
-        
     }
 
     @Override
@@ -44,7 +42,6 @@ public class ColaboradorServiceImpl implements ColaboradorService{
         if(!colaboradorOptional.isPresent()) return null;
         colaborador.setId(colaboradorOptional.get().getId());
         return colaboradorRepository.save(colaborador);
-        
     }
 
     @Override
@@ -53,7 +50,5 @@ public class ColaboradorServiceImpl implements ColaboradorService{
         Colaborador colaborador = new Colaborador();
         colaborador.setId(id);
         colaboradorRepository.delete(colaborador);   
-        
     }
-    
 }

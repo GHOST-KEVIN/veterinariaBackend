@@ -8,7 +8,6 @@ import veterinaria.models.Colaborador;
 @Repository
 public interface ColaboradorRepository extends JpaRepository<Colaborador, Integer>{
     
-    
     @Query(nativeQuery = true, value = "SELECT * FROM colaborador WHERE id = ?1")
     public Colaborador findByColaboradorId(Integer id);
     

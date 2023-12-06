@@ -18,6 +18,7 @@ import veterinaria.services.ColaboradorService;
 @RequestMapping("/api/colaborador")
 @CrossOrigin(origins = "*")
 public class ColaboradorController {
+    
     @Autowired
     private ColaboradorService colaboradorService;
     

@@ -23,6 +23,7 @@ import veterinaria.services.HistoriaClinicaService;
 @RequestMapping("/api/historia_clinica")
 @CrossOrigin(origins = "*")
 public class HistoriaClinicaController {
+    
     @Autowired
     private HistoriaClinicaService historiaClinicaService;
     
@@ -30,7 +31,6 @@ public class HistoriaClinicaController {
     public ResponseEntity<?> listarTodasLasHistoriasClinicas(){
         
         return ResponseEntity.ok(historiaClinicaService.obtenerTodo());
-        
     }
     
     @GetMapping("/{id}")
@@ -38,7 +38,6 @@ public class HistoriaClinicaController {
         
         HistoriaClinicaDTO historiaDTO = historiaClinicaService.obtenerPorId(id);
         return ResponseEntity.ok(historiaDTO);
-        
     }
     
     @PostMapping
@@ -54,7 +53,6 @@ public class HistoriaClinicaController {
             Map<String, String> error = new HashMap<>();
             error.put("message", e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            
         }
     }
     
@@ -71,9 +69,7 @@ public class HistoriaClinicaController {
             Map<String, String> error = new HashMap<>();
             error.put("message", e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            
         }
-        
     }
     
     @DeleteMapping("/{id}")
@@ -81,7 +77,5 @@ public class HistoriaClinicaController {
         
         historiaClinicaService.eliminar(id);
         return ResponseEntity.noContent().build();
-        
     }
-    
 }

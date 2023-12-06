@@ -25,27 +25,32 @@ public class UsuarioController {
     
     @GetMapping
     public ResponseEntity<?> listarTodosLosUsuarios(){
+        
         return ResponseEntity.ok(usuarioService.obtenerTodo());
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@PathVariable Integer id){
+        
         UsuarioDTO usuarioDTO = usuarioService.obtenerPorId(id);
         return ResponseEntity.ok(usuarioDTO);
     }
     
     @PostMapping
     public ResponseEntity<Usuario> guardarUsuario(@RequestBody Usuario usuario){
+        
         return ResponseEntity.ok(usuarioService.registrar(usuario));
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizarBiblioteca(@PathVariable Integer id, @RequestBody Usuario usuario){
+        
         return ResponseEntity.ok(usuarioService.actualizar(id, usuario));
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarBiblioteca(@PathVariable Integer id){
+        
         usuarioService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
