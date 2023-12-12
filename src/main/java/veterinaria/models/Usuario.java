@@ -29,11 +29,14 @@ public class Usuario {
     @Column(name = "apellido", length = 25, nullable = false)
     private String apellido;
     
-    @Column(name = "tipo_documento", length = 255, nullable = false)
+    @Column(name = "tipo_documento", length = 30, nullable = false)
     private String tipoDocumento;
    
-    @Column(name = "documento_identificacion", nullable = false)
+    @Column(name = "documento_identificacion", nullable = false, unique = true)
     private int documentoIdentificacion;
+    
+    @Column(name = "estado", nullable = false)
+    private boolean estado;
     
     @Column(name = "sexo", length = 6, nullable = false)
     private String sexo;

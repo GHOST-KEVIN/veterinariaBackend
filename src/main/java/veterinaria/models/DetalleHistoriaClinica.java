@@ -1,6 +1,6 @@
 package veterinaria.models;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,7 +35,7 @@ public class DetalleHistoriaClinica {
     private double frecuenciaRespiratoria;
     
     @Column(name = "fecha_hora", nullable = false)
-    private LocalDate fechaHora;
+    private ZonedDateTime fechaHora;
     
     @Column(name = "alimentacion", nullable = false, length = 255)
     private String alimentacion;

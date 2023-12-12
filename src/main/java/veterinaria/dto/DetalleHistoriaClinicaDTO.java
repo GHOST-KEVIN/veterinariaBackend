@@ -1,6 +1,6 @@
 package veterinaria.dto;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ public class DetalleHistoriaClinicaDTO {
     private double peso;
     private double frecuenciaCardiaca;
     private double frecuenciaRespiratoria;
-    private LocalDate fechaHora;
+    private ZonedDateTime fechaHora;
     private String alimentacion;
     private String habitad;
     private String observacion;

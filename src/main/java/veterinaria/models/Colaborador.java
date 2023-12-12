@@ -27,7 +27,7 @@ public class Colaborador {
     @Column(name = "especialidad", length = 30, nullable = false)
     private String especialidad;
     
-    @Column(name = "tipo_documento", length = 255, nullable = false)
+    @Column(name = "tipo_documento", length = 30, nullable = false)
     private String tipoDocumento;
     
     @Column(name = "documento_identificacion", nullable = false)

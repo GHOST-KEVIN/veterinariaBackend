@@ -1,5 +1,6 @@
 package veterinaria.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,13 @@ import veterinaria.mappers.DetalleHistoriaClinicaMapper;
 import veterinaria.models.Colaborador;
 import veterinaria.models.DetalleHistoriaClinica;
 import veterinaria.models.HistoriaClinica;
+import veterinaria.models.Mascota;
+import veterinaria.models.Usuario;
 import veterinaria.repositorys.ColaboradorRepository;
 import veterinaria.repositorys.DetalleHistoriaClinicaRepository;
 import veterinaria.repositorys.HistoriaClinicaRepository;
+import veterinaria.repositorys.MascotaRepository;
+import veterinaria.repositorys.UsuarioRepository;
 import veterinaria.services.DetalleHistoriaClinicaService;
 
 @Service
@@ -26,6 +31,12 @@ public class DetalleHistoriaClinicaServiceImpl implements DetalleHistoriaClinica
     private ColaboradorRepository colaboradorRepository;
     
     @Autowired
+    private UsuarioRepository usuarioRepository;
+    
+    @Autowired
+    private MascotaRepository mascotaRepository;
+    
+    @Autowired
     private DetalleHistoriaClinicaMapper detalleMapper;
     
     @Override
@@ -33,17 +44,25 @@ public class DetalleHistoriaClinicaServiceImpl implements DetalleHistoriaClinica
         
         List<DetalleHistoriaClinica> detalles = detalleHistoriaClinicaRepository.findAll();
         List<DetalleHistoriaClinicaDTO> detallesDTO = detalleMapper.listDetalleHistoriaClinicaToListDetalleHistoriaClinicaDTO(detalles);
-        
-        for(DetalleHistoriaClinicaDTO detalleDTO : detallesDTO){
-            
+        List<DetalleHistoriaClinicaDTO> detallesActivosDTO = new ArrayList<>();
+
+        for (DetalleHistoriaClinicaDTO detalleDTO : detallesDTO) {
             HistoriaClinica historiaClinica = historiaClinicaRepository.findByHistoriaClinicaId(detalleDTO.getHistoriaClinicaId());
             detalleDTO.setHistoriaClinica(historiaClinica);
-            
             Colaborador colaborador = colaboradorRepository.findByColaboradorId(detalleDTO.getColaboradorId());
             detalleDTO.setColaborador(colaborador);
+
+            Mascota mascota = mascotaRepository.findByMascotaId(historiaClinica.getMascotaId());
+            Usuario usuario = usuarioRepository.findByUsuarioId(mascota.getUsuarioId());
+            boolean estado = usuario.isEstado();
+
+
+            if (estado) {
+                detallesActivosDTO.add(detalleDTO);
+            }
         }
-        
-        return detallesDTO;
+
+        return detallesActivosDTO;
     }
 
     @Override

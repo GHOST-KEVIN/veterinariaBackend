@@ -1,6 +1,7 @@
 package veterinaria.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,4 +16,5 @@ public class HistoriaClinicaDTO {
     private LocalDate fechaCreacion;
     private Integer mascotaId;
     private Mascota mascota;
+    private List<DetalleHistoriaClinicaDTO> detallesClinicos;
 }

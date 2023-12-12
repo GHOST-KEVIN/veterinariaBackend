@@ -1,17 +1,23 @@
 package veterinaria.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import veterinaria.dto.DetalleHistoriaClinicaDTO;
 import veterinaria.dto.HistoriaClinicaDTO;
 import veterinaria.exepciones.ResourceNotFoundException;
+import veterinaria.mappers.DetalleHistoriaClinicaMapper;
 import veterinaria.mappers.HistoriaClinicaMapper;
+import veterinaria.models.DetalleHistoriaClinica;
 import veterinaria.models.HistoriaClinica;
 import veterinaria.models.Mascota;
+import veterinaria.models.Usuario;
 import veterinaria.repositorys.DetalleHistoriaClinicaRepository;
 import veterinaria.repositorys.HistoriaClinicaRepository;
 import veterinaria.repositorys.MascotaRepository;
+import veterinaria.repositorys.UsuarioRepository;
 import veterinaria.services.HistoriaClinicaService;
 
 @Service
@@ -26,19 +32,35 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService{
     private DetalleHistoriaClinicaRepository detalleRepository;
     
     @Autowired
+    private UsuarioRepository usuarioRepository;
+    
+    @Autowired
     private HistoriaClinicaMapper historiaMapper;
+    
+    @Autowired
+    private DetalleHistoriaClinicaMapper detalleMapper;
     
     @Override
     public List<HistoriaClinicaDTO> obtenerTodo() {
-        
+
         List<HistoriaClinica> historias = historiaClinicaRepository.findAll();
         List<HistoriaClinicaDTO> historiasDTO = historiaMapper.listHistoriaClinicaToListHistoriaClinicaDTO(historias);
-        
-        for(HistoriaClinicaDTO historiaDTO : historiasDTO){
+        List<HistoriaClinicaDTO> historiasActivasDTO = new ArrayList<>();
+
+        for (HistoriaClinicaDTO historiaDTO : historiasDTO) {
+
             Mascota mascota = mascotaRepository.findByMascotaId(historiaDTO.getMascotaId());
             historiaDTO.setMascota(mascota);
+
+            Usuario usuario = usuarioRepository.findByUsuarioId(mascota.getUsuarioId());
+            boolean estado = usuario.isEstado();
+
+            if (estado) {
+                historiasActivasDTO.add(historiaDTO);
+            }
         }
-        return historiasDTO;
+
+        return historiasActivasDTO;
     }
 
     @Override
@@ -50,6 +72,10 @@ public class HistoriaClinicaServiceImpl implements HistoriaClinicaService{
         HistoriaClinicaDTO historiaDTO = historiaMapper.historiaClinicaToHistoriaClinicaDTO(historiaClinica.get());
         Mascota mascota = mascotaRepository.findByMascotaId(historiaDTO.getMascotaId());
         historiaDTO.setMascota(mascota);
+        
+        List<DetalleHistoriaClinica> detalles = detalleRepository.findBydetalleId(historiaDTO.getId());
+        List<DetalleHistoriaClinicaDTO> detallesDTO = detalleMapper.listDetalleHistoriaClinicaToListDetalleHistoriaClinicaDTO(detalles);
+        historiaDTO.setDetallesClinicos(detallesDTO);
         
         return historiaDTO;
     }

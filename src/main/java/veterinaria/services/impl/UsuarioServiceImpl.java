@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import veterinaria.dto.MascotaDTO;
 import veterinaria.dto.UsuarioDTO;
+import veterinaria.exepciones.ResourceNotFoundException;
+import veterinaria.mappers.MascotaMapper;
 import veterinaria.mappers.UsuarioMapper;
 import veterinaria.models.HistoriaClinica;
 import veterinaria.models.Mascota;
@@ -31,6 +34,9 @@ public class UsuarioServiceImpl implements UsuarioService{
     private UsuarioMapper usuarioMapper;
     
     @Autowired
+    private MascotaMapper mascotaMapper;
+    
+    @Autowired
     private MascotaService mascotaService;
     
     @Autowired
@@ -47,11 +53,27 @@ public class UsuarioServiceImpl implements UsuarioService{
         
         Optional<Usuario> usuario = usuarioRepository.findById(id);
         if(!usuario.isPresent()) return null;
-        return usuarioMapper.usuarioToUsuarioDTO(usuario.get());
+        
+        UsuarioDTO usuarioDTO = usuarioMapper.usuarioToUsuarioDTO(usuario.get());
+        List<Mascota> mascotas = mascotaRepository.findByUsuarioId(usuarioDTO.getId());
+        List<MascotaDTO> mascotasDTO = mascotaMapper.listMascotaToListMascotaDTO(mascotas);
+        usuarioDTO.setMascotas(mascotasDTO);
+        
+        return usuarioDTO;
     }
     
     @Override
     public Usuario registrar(Usuario usuario) {
+        
+        List<Usuario> usuariosDB = usuarioRepository.findAll();
+        
+        for(Usuario usu : usuariosDB){
+            
+            int numeroIdentificacionDB = usu.getDocumentoIdentificacion();
+            if(numeroIdentificacionDB == usuario.getDocumentoIdentificacion()){
+                throw new ResourceNotFoundException("Ya existe el numero de identificacion: "+ numeroIdentificacionDB);
+            }
+        }
         
         return usuarioRepository.save(usuario);
     }
@@ -62,6 +84,21 @@ public class UsuarioServiceImpl implements UsuarioService{
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
         if(!usuarioOptional.isPresent()) return null;
         usuario.setId(usuarioOptional.get().getId());
+        
+        List<Usuario> usuariosDB = usuarioRepository.findAll();
+        for (Usuario usu : usuariosDB) {
+            
+            if (usu.getId() != usuario.getId()) {
+                
+                int numeroIdentificacionDB = usu.getDocumentoIdentificacion();
+                if (usuario.getDocumentoIdentificacion() == numeroIdentificacionDB) {
+
+                    throw new ResourceNotFoundException("Ya existe el numero de identificacion: " + numeroIdentificacionDB);
+                }
+            }
+            
+        }
+        
         return usuarioRepository.save(usuario);
     }
 

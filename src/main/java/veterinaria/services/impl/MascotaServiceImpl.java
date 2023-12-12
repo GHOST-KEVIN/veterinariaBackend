@@ -1,8 +1,8 @@
 package veterinaria.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import veterinaria.dto.MascotaDTO;
@@ -36,17 +36,22 @@ public class MascotaServiceImpl implements MascotaService{
     
     @Override
     public List<MascotaDTO> obtenerTodo() {
-        
         List<Mascota> mascotas = mascotaRepository.findAll();
+        List<MascotaDTO> mascotasDTO = mascotaMapper.listMascotaToListMascotaDTO(mascotas);
+        List<MascotaDTO> mascotasActivasDTO = new ArrayList<>();
 
-        return mascotas.stream().map(mascota -> {
-
-            MascotaDTO mascotaDTO = mascotaMapper.mascotaToMascotaDTO(mascota);
+        for (MascotaDTO mascotaDTO : mascotasDTO) {
+            
             Usuario usuario = usuarioRepository.findByUsuarioId(mascotaDTO.getUsuarioId());
             mascotaDTO.setUsuario(usuario);
-            return mascotaDTO;
+            
+            boolean estado = usuario.isEstado();
+            if (estado) {
+                mascotasActivasDTO.add(mascotaDTO);
+            }
+        }
 
-        }).collect(Collectors.toList());
+        return mascotasActivasDTO;
     }
 
     @Override
